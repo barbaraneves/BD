@@ -1,0 +1,162 @@
+-- Lista 4: Consultas em SQL 
+
+-- 1ª Questão 
+SELECT E.enome,
+FROM Empregados E, Departamentos D
+WHERE E.dnumero = D.dnumero AND D.dnome = 'D5' AND E.salario > 5.000
+ORDER BY E.enome;
+
+-- 2ª Questão
+SELECT S.enome
+FROM Empregados S, Empregados E
+WHERE S.CPF = E.CPF_Supervisor AND E.salario > 5000;
+
+-- 3ª Questão
+SELECT E.enome, E.salario
+FROM Empregados E, Empregados S
+WHERE E.CPF_Supervisor = S.CPF AND E.salario > S.salario;
+
+--4ª Questão 
+SELECT E.enome
+FROM Empregados E, Departamentos D, Projetos P
+WHERE E.CPF = D.CPF_Gerente AND D.dnumero = P.dnumero;
+
+--5ª Questão
+SELECT P.pnome 
+FROM Projetos P, Empregados E, Trabalha T
+WHERE P.pnumero = T.pnumero AND T.CPF_Emp = E.CPF AND E.enome = 'JOAO SILVA';
+
+--Fim da Lista 4 até a 5ª questão 
+
+--Lista 4 - Continuação
+
+--1ª Questão 
+SELECT *
+FROM Empregados E
+WHERE E.salario
+BETWEEN 1000 AND 2000;
+
+--2ª Questão
+SELECT E.enome
+FROM Empregados E
+WHERE E.salario
+IN (SELECT MAX(E2.salario) FROM Empregados E2);
+
+--3ª Questão
+SELECT E.enome, COUNT(D.*) 
+FROM Empregados E, Departamentos D
+WHERE E.CPF = D.CPF_Gerente 
+GROUP BY E.enome;
+
+--Fim da Lista 4 - Continuação até a 5ª questão 
+
+--Lista 5: Consultas em SQL
+
+--1ª Questão 
+SELECT E.CPF 
+FROM Empregados E LEFT JOIN Trabalha T
+ON E.CPF = T.CPF_Emp
+WHERE T.CPF_Emp IS NULL;
+
+--2ª Questão 
+SELECT DISTINCT E.CPF 
+FROM Empregados E, Trabalha T
+WHERE E.CPF = T.CPF_Emp;
+
+--3ª Questão 
+SELECT E.CPF
+FROM Empregados E
+WHERE NOT EXISTS(
+(SELECT P.pnumero
+FROM Projeto P)
+EXCEPT (SELECT T.pnumero
+FROM Trabalha T
+WHERE T.CPF_Emp = E.CPF));
+
+--4ª Questão
+SELECT E.enome, E.salario, D.dnumero
+FROM Empregados E LEFT JOIN Departamentos D
+ON E.CPF = D.CPF_Emp
+
+--5ª Questão
+SELECT E.enome
+FROM Empregados E
+WHERE E.salario = (SELECT MAX(E2.salario)
+FROM Empregados E2, Departamento D
+WHERE E2.dnumero = D.dnumero AND D.dnome = 'Transporte');
+
+--Fim da Lista 5 até a 5ª questão 
+
+--Lista 6:
+
+--1ª Questão
+SELECT F.fnome 
+FROM Fornecedor F
+WHERE F.FID 
+IN (SELECT FPP.FID
+FROM FornPecaProj FPP 
+EXCEPT
+SELECT FPP.FID 
+FROM FornPecaProj, Projetos J
+WHERE FPP.JID = J.JID AND J.Jnome <> 'Quixada');
+
+--2ª Questão
+SELECT P.*
+FROM Peca P
+EXCEPT (
+(SELECT FPP.PID 
+FROM FornPecaProf FPP, Fornecedor F
+WHERE FPP.FID = F.FID AND F.Fnome = 'João Silva')
+UNION
+(SELECT FPP.PID
+FROM FornPecaProf FPP, Fornecedor F
+WHERE FPP.FID = F.FID AND F.Fnome = 'Maria Silva'));
+
+--3ª Questão
+SELECT P.pnome, SUM(QTD)
+FROM Peca P, FornPecaProj FPP
+WHERE P.PID = FPP.PID
+GROUP BY P.pnome;
+
+--4ª Questão
+SELECT DISTINCT F.Fnome
+FROM Fornecedor F, FornPecaProj FPP, Projetos J
+WHERE F.FID = FPP.FID AND FPP.JID = J.JID AND J.Jnome = 'J1';
+
+--5ª Questão
+SELECT F.Fnome 
+FROM Fornecedor F
+WHERE NOT EXISTS ((SELECT FPP.PID 
+FROM FornPecaProj FPP, Peca P
+WHERE FPP.PID = PID AND FPP.FID = F.FID)
+EXCEPT 
+(SELECT FPP.PID 
+FROM FornPecaProj FPP, Projetos J
+WHERE FPP.JID = J.JID AND J.Jnome = 'J1'));
+
+--6ª Questão
+SELECT P.Pnome
+FROM Peca P
+WHERE NOT EXISTS ((SELECT J.JID
+FROM Projeto J)
+EXCEPT 
+(SELECT FPP.JID 
+FROM FornPecaProj
+WHERE FPP.PID = P.PID));
+
+--7ª Questão
+SELECT F.FID
+FROM Fornecedor F, Peca P
+WHERE NOT EXISTS ((SELECT FPP.JID 
+FROM FornPecaProj FPP
+WHERE FPP.FID = F.FID)
+EXCEPT (SELECT FPP.JID 
+FROM FornPecaProj FPP
+WHERE FPP.FID = F.FID AND FPP.PID = P.PID)); 
+
+--8ª Questão
+SELECT P.Pnome
+FROM Peca P
+WHERE NOT EXISTS (
+SELECT FPP.PID
+FROM FornPecaProj FPP);

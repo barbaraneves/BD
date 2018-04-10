@@ -1,0 +1,7 @@
+Create table Amigo (aid integer, anome varchar(20), sexo char, idade integer, CONSTRAINT a_pkey primary key (aid));
+Create table Presente (pid integer, pdescricao varchar(20), pvalor real, CONSTRAINT p_pkey primary key (pid));
+Create table ListaPresente (aid integer, pid integer, preferencia integer, CONSTRAINT lp_pkey primary key (aid, pid), 
+constraint fk_1 foreign key(aid) references Amigo(aid), constraint fk_2 foreign key(pid) references Presente(pid));
+Create table AmigoSecreto(aid integer, aid_amigo integer, pid_recebido integer, CONSTRAINT as_pkey primary key (aid, aid_amigo), 
+constraint fk_3 foreign key(aid) references Amigo(aid), constraint fk_4 foreign key(aid_amigo) references Amigo(aid), 
+constraint fk_5 foreign key(pid_recebido) references Presente(pid));

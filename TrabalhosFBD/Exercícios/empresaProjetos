@@ -1,0 +1,148 @@
+﻿﻿create table Empregados(
+CPF integer,
+enome varchar(45),
+salario float,
+CPF_Supervisor integer,
+dnumero integer,
+CONSTRAINT empregados_pkey PRIMARY KEY (CPF),
+CONSTRAINT empregados_fkey_1 FOREIGN KEY (CPF_Supervisor)
+REFERENCES Empregados (CPF));
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (000111222, 'JOAO SILVA', 1.000, 000111222, 1);
+
+create table Departamentos(
+dnumero integer,
+dnome varchar(45),
+CPF_Gerente integer,
+CONSTRAINT departamentos_pkey PRIMARY KEY (dnumero),
+CONSTRAINT departamentos_fkey FOREIGN KEY (CPF_Gerente) 
+REFERENCES Empregados (CPF));
+
+INSERT INTO Departamentos (dnumero, dnome, CPF_Gerente) 
+VALUES (1, 'D1', 000111222);
+
+ALTER TABLE Empregados ADD CONSTRAINT empregados_pkey_2 FOREIGN KEY (dnumero)
+REFERENCES Departamentos (dnumero);
+
+create table Projetos(
+pnumero integer,
+pnome varchar(45),
+dnumero integer,
+CONSTRAINT projetos_pkey PRIMARY KEY (pnumero),
+CONSTRAINT projetos_fkey FOREIGN KEY (dnumero)
+REFERENCES Departamentos (dnumero));
+
+CREATE TABLE Trabalha(
+CPF_Emp integer,
+pnumero integer,
+CONSTRAINT projetos_fkey_1 FOREIGN KEY (CPF_Emp)
+REFERENCES Empregados (CPF),
+CONSTRAINT projetos_fkey_2 FOREIGN KEY (pnumero)
+REFERENCES Projetos (pnumero));
+
+UPDATE Empregados SET salario = 1000 WHERE CPF = 000111222;
+
+SELECT E.nome
+FROM Empregados E, Departamentos D
+WHERE D.nome = 'D5' AND E.dnumero = D.dnumero AND E.salario > 5000
+ORDER BY E.nome;
+
+SELECT S.nome
+FROM Empregados S, Empregados E
+WHERE s.CPF = E.CPF_Supervisor AND E.salario > 5000;
+
+SELECT E.nome, E.salario
+FROM Empregados E, Empregados S
+WHERE E.CPF_Supervisor = S.CPF AND E.salario > S.salario;
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (111333, 'MARCELO MELO', 1200, 000111222, 1);
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222444, 'ANA LU', 1500, 222444, 1);
+
+INSERT INTO Departamentos (dnumero, dnome, CPF_Gerente) 
+VALUES (2, 'D2', 222444);
+
+UPDATE Empregados SET dnumero = 2 WHERE CPF = 222444;
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (111444, 'MARIA NEVES', 5000, 222444, 2);
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222111, 'PEDRO PAULA', 2000, 222111, 2);
+
+INSERT INTO Departamentos (dnumero, dnome, CPF_Gerente) 
+VALUES (5, 'D5', 222111);
+
+UPDATE Empregados SET dnumero = 5 WHERE CPF = 222111;
+
+UPDATE Empregados SET salario = 7000 WHERE CPF = 222444;
+
+UPDATE Empregados SET salario = 8000 WHERE CPF = 111444;
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222222, 'JON SNOW', 7500, 222111, 5);
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222333, 'DAENERYS TARGARYEN', 8000, 222111, 5);
+
+SELECT * FROM Empregados;
+
+SELECT * FROM Departamentos;
+
+--1ª Questão
+SELECT E.enome 
+FROM Empregados E, Departamentos D
+WHERE D.dnome = 'D5' AND E.dnumero = D.dnumero AND E.salario > 5000
+ORDER BY E.enome;
+
+--2ª Questão
+SELECT S.enome
+FROM Empregados S, Empregados E
+WHERE S.CPF = E.CPF_Supervisor AND E.salario > 5000;
+
+--3ª Questão 
+SELECT E.enome, E.salario
+FROM Empregados E, Empregados S
+WHERE E.CPF_Supervisor = S.CPF AND E.salario > S.salario;
+
+--4ª Questão
+SELECT P.pnumero, E.enome
+FROM Empregados E, Departamentos D, Projetos P
+WHERE E.CPF = D.CPF_Gerente AND D.dnumero = P.pnumero;
+
+--5ª Questão
+SELECT P.pnome
+FROM Projetos P, Trabalha T, Empregados E
+WHERE P.pnumero = T.pnumero AND T.CPF_Emp = E.CPF AND E.enome = 'JOAO SILVA';
+
+--6ª Questão
+SELECT P.pnome
+FROM Projetos P, Departamento D, Enmpregados E
+WHERE P.dnumero = D.dnumero AND D.CPF_Gerente = E.CPF AND E.nome = 'JOAO SILVA';
+
+--7ª Questão
+SELECT AVG(E.salario) 
+FROM Empregados E, Departamentos D
+WHERE E.dnumero = D.dnumero AND D.dnome = 'VENDAS';
+
+--8ª Questão
+SELECT E.enome, COUNT(T.pnumero)
+FROM  Empregados E, Trabalha T
+WHERE T.CPF_Emp = E.CPF 
+GROUP BY E.enome;
+
+--9ª Questão
+SELECT P.pnome, COUNT (T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE T.pnumero = P.pnumero
+GROUP BY P.pnome;
+
+--10ª Questão
+SELECT P.pnome, COUNT (T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE T.pnumero = p.pnumero 
+HAVING COUNT ((T.CPF_Emp) > 3)
+GROUP BY P.pnome;

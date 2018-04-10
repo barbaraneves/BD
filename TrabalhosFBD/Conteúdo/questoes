@@ -1,0 +1,37 @@
+Considere os seguintes esquemas de relação:
+Julgaodr (JID, JNOME, SEXO)      
+Quesito (QID, DESCRICAO)       
+Escola (EID, ENOME, LOCAL)        
+Nota (QID, JID, EID, NOTA)
+
+1. Especifique as seguintes consultas em SQL. 
+
+a. Encontre os JULGADORES que só JULGARAM QUESITOS de ESCOLAS de Quixadá.
+
+b. Encontre as QUESITOS que não são JULGADOS nem pelo JULGADOR ‘João’ nem pela ‘Maria’.
+
+c. Encontre para cada QUESITO, a media das notas de JULGAMENTO considerando todos as ESCOLAS julgadas.
+
+d. Encontre os JULGADORES que JULGARAM os QUESITOS DA ESCOLA 'Unidos de Quixada'.
+
+e. Encontre os JULGADORES que JULGARAM todos os QUESITOS usadas da ESCOLA 'Unidos de Quixada'.
+
+f. Encontre os QUESITOS que são JULGADAS em todos os ESCOLAS.
+
+g. Encontre os números e o nome dos JULGADORES que JULGARAM o mesmo QUESITO para todos os ESCOLAS.
+
+h. Encontre os QUESITOS que não são JULGADAS em nenhum ESCOLA.
+
+i. Liste as ESCOLAS que no QUESITO 'enredo' tiveram nota maior que a de alguma outra ESCOLA no mesmo QUESITO.
+
+j. Retorne os QUESITOS JULGADOS pelo JULGADOR 'Jonas'.
+
+k. Encontre para cada QUESITO JULGADO: o nome do QUESITO, a nota máxima e nota mínima em que este QUESITO é JULGADO, excluindo os jugamentos feitos pelo JULGADOR 'Jonas'. 
+
+l. Encontre os números e a DESCRICAO de todas os QUESITOS que são JULGADAS por mais de um JULGADOR.
+
+m. Encontre a quantidade total de ESCOLAS JULGADA por cada JULGADOR. Nessa relação deve constar mesmo os JULGADORES que não JULGARAM nenhuma ESCOLA.  
+
+n. Encontre os nomes dos JULGADORES que JULGARAM todos os QUESITOS.
+
+o. Encontre o JULGADOR que JULGOU a maior quantidade de ESCOLAS.

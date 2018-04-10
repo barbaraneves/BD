@@ -1,0 +1,41 @@
+CREATE TABLE Fornecedor
+(
+  fnome varchar(20),
+  cidade varchar(20),
+  fid integer NOT NULL,
+  CONSTRAINT id PRIMARY KEY (fid)
+);
+
+
+CREATE TABLE Projeto
+(
+  jid integer NOT NULL,
+  jnome varchar(20),
+  cidade varchar(20),
+  CONSTRAINT j_pkey PRIMARY KEY (jid)
+);
+
+CREATE TABLE Peca
+(
+  pid integer NOT NULL,
+  pnome varchar(20),
+  cor varchar(20),
+  CONSTRAINT p_pkey PRIMARY KEY (pid)
+);
+
+CREATE TABLE FornPecaProj 
+(
+  fid integer NOT NULL,
+  pid integer NOT NULL,
+  jid integer NOT NULL,
+qtd integer NOT NULL,
+  CONSTRAINT p_pkey1 PRIMARY KEY (fid,pid,jid),
+  constraint fk_1 foreign key(fid) references Fornecedor(fid),
+  constraint fk_2 foreign key(pid) references Peca(pid),
+  constraint fk_3 foreign key(jid) references Projeto(jid) 
+);
+
+
+
+
+

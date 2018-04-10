@@ -1,0 +1,113 @@
+--Lista 4: Consultas em SQL 
+
+--7ª Questão
+SELECT AVG(E.salario)
+FROM Empregados E, Departamento D
+WHERE E.dnumero = D.dnumero AND D.dnome = 'VENDAS'
+
+--8ª Questão
+SELECT E.enome, COUNT(T.pnumero)
+FROM Empregados E, Trabalha T
+WHERE E.CPF = T.CPF_Emp;
+GROUP BY E.enome;
+
+--9ª Questão
+SELECT P.pnome, COUNT(T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE P.pnumero = T.pnumero
+GROUP BY P.pnome
+
+--10ª Questão
+SELECT P.pnome, COUNT(T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE P.pnumero = T.pnumero
+GROUP BY P.pnome
+HAVING COUNT(T.CPF_Emp) > 3
+
+--Lista 4 - Continuação
+
+--Questão 4
+SELECT D.dnome, MAX(E.salario), MIN(E.salario)
+FROM Departamentos D, Empregados E
+WHERE D.dnumero = E.dnumero 
+GROUP BY D.dnome;
+
+--Questão 5
+SELECT DISTINCT(S.CPF), S.enome 
+FROM Empregados S, Empregados E, Departamento T
+WHERE S.CPF = E.CPF_Supervisor AND S.CPF = T.CPF_Gerente
+
+--Lista 5: Consultas em SQL
+
+--Questão 6
+SELECT E.enome, COUNT(E.CPF)
+FROM Empregados E, Trabalha T
+WHERE E.CPF = T.CPF_Emp 
+GROUP BY E.enome
+HAVING COUNT(T.pnumero) > 1
+
+--Questão 7
+SELECT D.dnome, E.Enome 
+FROM Departamentos D LEFT JOIN Empregados E
+ON D.dnumero = E.dnumero
+
+--Questão 8
+CREATE VIEW Qtd_Emp_Proj(nome_proj, qtd_emp) AS
+SELECT P.pnome, COUNT(T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE P.pnumero = T.pnumero
+GROUP BY P.pnome
+
+SELECT AVG(qtd_emp) FROM Qtd_Emp_Proj
+
+--9ª Questão
+SELECT QEP.nome_proj
+FROM Qtd_Emp_Proj QEP
+WHERE (SELECT AVG(QEP2.qtd_emp
+FROM Qtd_Emp_Proj QEP2)) < QEP.qtd_emp
+
+--Lista 6: Consultas em SQL
+
+--10ª Questão
+SELECT P.pnome
+FROM Pecas P, FornPecaProj FPP, Fornecedor F
+WHERE P.PID = FPP.PID AND FPP.FID = J.FID AND F.fnome = 'F1'
+
+--11ª Questão
+SELECT P.pnome, MAX(FPP.qtd), MIN(FPP.qtd)
+FROM Peca P, FornPecaProj FPP
+WHERE P.PID
+EXCEPT (SELECT FPP.PID
+FROM Fornecedor F
+WHERE FPP.FID = F.FID AND F.fnome = 'F1')
+GROUP BY P.pnome;
+
+--12ª Questão
+SELECT P.PID
+FROM Peca P
+WHERE (SELECT COUNT(FPP.PID
+FROM FornPecaProj FPP, Fornecedor F
+WHERE FPP.FID = F.FID) > 1;
+
+--13ª Questão 
+SELECT F.fnome, SUM(FPP.qtd)
+FROM FornPecaProj FPP LEFT JOIN Projetos J
+ON FPP.JID = J.JID
+
+--14ª Questão 
+SELECT F.fnome
+FROM Fornecedor F
+WHERE NOT EXISTS ((SELECT P.PID 
+FROM Peca P)
+EXCEPT (SELECT FPP.PID
+FROM FornPecaProj
+WHERE FPP.FID = F.FID))
+GROUP BY F.fnome;
+
+--15ª Questão
+
+
+--16ª Questão 
+
+
+--17ª Questão

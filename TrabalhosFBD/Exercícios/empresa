@@ -1,0 +1,9 @@
+﻿SELECT 	* FROM Empregados E WHERE E.salario BETWEEN 1000 AND 2000;
+
+SELECT E.enome FROM Empregados E WHERE E.salario IN (SELECT MAX(E2.salario) FROM Empregados);
+
+SELECT E.enome, COUNT (D.*) FROM Empregados E, Departamentos D WHERE D.CPF_Gerente = E.CPF GROUP BY E.enome;
+
+SELECT D.dnumero, MIN(E.salario), MAX(E.salario) FROM Departamentos D, Empregados E WHERE E.dnumero = D.dnumero GROUP BY D.dnumero;
+
+SELECT DISTINCT(G.CPF) G.enome FROM Empregados G, Empregados E, Departamentos D WHERE G.CPF = E.CPF_Supervisor AND G.CPF = D.CPF_Gerente;

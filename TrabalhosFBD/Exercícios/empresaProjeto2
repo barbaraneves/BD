@@ -1,0 +1,115 @@
+﻿INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (111333, 'MARCELO MELO', 1200, 000111222, 1);
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222444, 'ANA LU', 1500, 222444, 1);
+
+INSERT INTO Departamentos (dnumero, dnome, CPF_Gerente) 
+VALUES (2, 'D2', 222444);
+
+UPDATE Empregados SET dnumero = 2 WHERE CPF = 222444;
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (111444, 'MARIA NEVES', 5000, 222444, 2);
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222111, 'PEDRO PAULA', 2000, 222111, 2);
+
+INSERT INTO Departamentos (dnumero, dnome, CPF_Gerente) 
+VALUES (5, 'D5', 222111);
+
+UPDATE Empregados SET dnumero = 5 WHERE CPF = 222111;
+
+UPDATE Empregados SET salario = 7000 WHERE CPF = 222444;
+
+UPDATE Empregados SET salario = 8000 WHERE CPF = 111444;
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222222, 'JON SNOW', 7500, 222111, 5);
+
+INSERT INTO Empregados (CPF, enome, salario, CPF_Supervisor, dnumero) 
+VALUES (222333, 'DAENERYS TARGARYEN', 8000, 222111, 5);
+
+INSERT INTO Projetos (pnumero, pnome, dnumero) VALUES (1, 'P1', 1);
+
+INSERT INTO Projetos (pnumero, pnome, dnumero) VALUES (2, 'P2', 2);
+
+INSERT INTO Projetos (pnumero, pnome, dnumero) VALUES (3, 'P3', 5);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (111222, 1);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (111333, 1);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (222111, 2);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (222444, 2);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (111444, 2);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (222222, 3);
+
+INSERT INTO Trabalha (CPF_Emp, pnumero) VALUES (222333, 3);
+
+SELECT * FROM Empregados;
+
+SELECT * FROM Departamentos;
+
+SELECT * FROM Projetos;
+
+SELECT * FROM Trabalha;
+
+SELECT E.enome
+FROM Empregados E, Departamentos D
+WHERE D.dnome = 'D5' AND E.dnumero = D.dnumero AND E.salario > 5000
+ORDER BY E.enome;
+
+SELECT S.enome
+FROM Empregados S, Empregados E
+WHERE S.CPF = E.CPF_Supervisor AND E.salario > 5000;
+
+SELECT E.enome, E.salario
+FROM Empregados E, Empregados S
+WHERE E.CPF_Supervisor = S.CPF AND E.salario > S.salario;
+
+SELECT P.pnumero, E.enome
+FROM Empregados E, Departamentos D, Projetos P
+WHERE E.CPF = D.CPF_Gerente AND D.dnumero = P.pnumero;
+
+SELECT P.pnome
+FROM Projetos P, Trabalha T, Empregados E
+WHERE P.pnumero = T.pnumero AND T.CPF_Emp = E.CPF AND E.enome = 'JOAO SILVA';
+
+SELECT P.pnome
+FROM Projetos P, Departamentos D, Empregados E
+WHERE P.dnumero = D.dnumero AND D.CPF_Gerente = E.CPF AND E.enome = 'JOAO SILVA';
+
+SELECT AVG(E.salario) 
+FROM Empregados E, Departamentos D
+WHERE E.dnumero = D.dnumero AND D.dnome = 'VENDAS';
+
+SELECT E.enome, COUNT(T.pnumero)
+FROM  Empregados E, Trabalha T
+WHERE T.CPF_Emp = E.CPF 
+GROUP BY E.enome;
+
+SELECT P.pnome, COUNT (T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE T.pnumero = P.pnumero
+GROUP BY P.pnome;
+
+SELECT P.pnome, COUNT (T.CPF_Emp)
+FROM Projetos P, Trabalha T
+WHERE T.pnumero = p.pnumero 
+GROUP BY P.pnome
+HAVING COUNT(T.CPF_Emp) > 3;
+
+
+
+
+
+
+
+
+
+
+
