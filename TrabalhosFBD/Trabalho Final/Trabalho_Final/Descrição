@@ -1,0 +1,69 @@
+
+
+Trabalho Final
+
+Entidades:
+
+locadora (
+     nome_locadora,
+     telefone, 
+     endereco, 
+     email
+);
+Endereco => Rua, bairro, complemento, uf, cidade, numero, cep.
+
+categoria (
+    id int NOT NULL,
+    nome varchar(20),
+    PRIMARY KEY (id)
+);
+
+cliente (
+    id SERIAL NOT NULL,
+    nome varchar(50),
+    cpf char(11),
+    data_cadastro date,
+    cidade varchar(50),
+    uf char(2) DEFAULT 'DF',
+    PRIMARY KEY (id),
+    UNIQUE (cpf)
+);
+
+produtora (
+    id int NOT NULL,
+    nome varchar(50),
+    PRIMARY KEY (id)
+);
+
+filme (
+    id int NOT NULL,
+    titulo varchar(50),
+    id_produtora int,
+    ano_lancamento int,
+    id_categoria int,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_produtora) REFERENCES produtora(id),
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id)
+);
+
+locações (
+    id int NOT NULL,
+    id_cliente int,
+    id_filme int,
+    dt_locacao date,
+    dt_devolucao_prevista date,
+    dt_devolucao date,
+    valor decimal(10,2),
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id),
+    FOREIGN KEY (id_filme) REFERENCES filme(id)
+);
+
+ator (
+    id_ator,
+    nome,
+    data_nasc, 
+    id_filme,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_filme) REFERENCES filme(id)
+;)
